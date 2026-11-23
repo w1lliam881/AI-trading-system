@@ -25,7 +25,25 @@ Yahoo Finance via det öppna paketet `yahoo-finance2`.
 
 ---
 
-## Installation (första gången)
+## 🚀 Snabbstart – det enkla sättet
+
+1. **Installera Node.js** (bara första gången): gå till <https://nodejs.org/sv/download>,
+   ladda ner **LTS** och installera som vanligt (klicka Nästa/Fortsätt hela vägen).
+2. **Ladda ner Terminalen:** på GitHub-sidan, klicka på gröna knappen **Code → Download ZIP**.
+   Packa upp ZIP-filen (dubbelklicka på den).
+3. **Dubbelklicka på startfilen** i den uppackade mappen:
+   - Mac: **`Starta Terminalen (Mac).command`**
+     (första gången: högerklicka → **Öppna** → **Öppna**, eftersom Mac varnar för nedladdade filer)
+   - Windows: **`Starta Terminalen (Windows).bat`**
+     (om Windows varnar: klicka **Mer information → Kör ändå**)
+
+Första gången installeras allt automatiskt (1–3 minuter). Sedan öppnas appen av sig själv i
+webbläsaren. **Låt det svarta fönstret vara öppet** medan du använder appen – stäng det för att
+stänga av. Nästa gång startar det på några sekunder.
+
+---
+
+## Installation för den vane (terminal)
 
 1. **Installera Node.js** (version 20 eller senare) från <https://nodejs.org> – välj "LTS".
    Kontrollera i en terminal:
