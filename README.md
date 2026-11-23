@@ -25,7 +25,21 @@ Yahoo Finance via det öppna paketet `yahoo-finance2`.
 
 ---
 
-## 🚀 Snabbstart – det enkla sättet
+## ⚡ Enklast: kör i webbläsaren (inget att installera)
+
+1. Klicka här: **<https://codespaces.new/w1lliam881/AI-trading-system?ref=claude/trusting-euler-ncxbli>**
+2. Klicka på gröna knappen **Create codespace**.
+3. Vänta 2–4 minuter första gången (allt installeras och startar av sig självt).
+4. Appen öppnas i en ny flik. Om Chrome blockerar fliken: klicka **Open in Browser**
+   i rutan nere till höger, eller fliken **PORTS** → klotet vid port 3000.
+
+Nästa gång: gå till <https://github.com/codespaces> och klicka på din codespace.
+Gratis för privatpersoner upp till ca 60 timmar/månad och pausas automatiskt efter
+30 minuter utan aktivitet.
+
+---
+
+## 🚀 På din egen dator (dubbelklick)
 
 1. **Installera Node.js** (bara första gången): gå till <https://nodejs.org/sv/download>,
    ladda ner **LTS** och installera som vanligt (klicka Nästa/Fortsätt hela vägen).
