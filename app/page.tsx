@@ -73,7 +73,7 @@ export default async function OverviewPage() {
                       <span className="flex items-center gap-2"><span className="truncate text-sm font-medium hover:text-accent">{s.item.name}</span><OutlookPill dir={s.outlook.dir} label={s.outlook.label} size="sm" /></span>
                       <span className="block truncate text-[11.5px] text-muted">{s.comp.pros[0] ?? s.comp.subs.technical.reason}</span>
                     </Link>
-                    <Sparkline data={s.snap!.spark} width={100} height={30} />
+                    <Sparkline data={s.snap!.spark} width={100} height={30} className="hidden sm:block" />
                     <span className="w-24 text-right">
                       <LivePrice symbol={s.item.ticker} initial={s.snap!.price} className="block text-sm" />
                       <LiveChange symbol={s.item.ticker} initial={s.snap!.changePct} className="text-[11px]" />
