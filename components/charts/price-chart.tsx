@@ -29,6 +29,8 @@ export interface ChartMarker {
   t: number;
   kind: "news" | "report" | "buy" | "sell" | "dividend";
   text: string;
+  /** För nyheter: positiv (>0) eller negativ (<0) ton. */
+  tone?: number;
 }
 
 interface Props {
@@ -140,19 +142,30 @@ export function PriceChart({ symbol, currency, gmtoffset, daily, fetchedAt, stal
       vol.setData(bars.map((b, i) => ({ time: times[i], value: b.v, color: b.c >= b.o ? `${up}55` : `${down}55` })) as never);
     }
 
-    // Markörer (nyheter, rapporter, Bottens affärer) – endast på dagsgraf.
-    if (!isIntraday && markers.length) {
+    // Markörer (nyheter, rapporter, utdelningar, Bottens affärer) – endast på dagsgraf.
+    // Varje markör placeras på närmaste handelsdag (samma dag eller dagen före).
+    if (!isIntraday && markers.length && times.length) {
       const colors = { news: accent, report: "#6ea8fe", buy: up, sell: down, dividend: "#c38bff" } as const;
-      const ms: SeriesMarker<Time>[] = markers
-        .map((m) => ({
-          time: dayString(m.t, gmtoffset) as Time,
-          position: m.kind === "sell" ? "aboveBar" : m.kind === "buy" ? "belowBar" : "aboveBar",
+      const letters = { news: "N", report: "R", buy: "K", sell: "S", dividend: "U" } as const;
+      const days = times.map(String);
+      const byKey = new Map<string, SeriesMarker<Time>>();
+      for (const m of markers) {
+        const d = dayString(m.t, gmtoffset);
+        let lo = 0, hi = days.length - 1, idx = -1;
+        while (lo <= hi) { const mid = (lo + hi) >> 1; if (days[mid] <= d) { idx = mid; lo = mid + 1; } else hi = mid - 1; }
+        if (idx < 0) continue;
+        const key = `${days[idx]}:${m.kind}`;
+        if (byKey.has(key)) continue;
+        byKey.set(key, {
+          time: days[idx] as Time,
+          position: m.kind === "buy" ? "belowBar" : "aboveBar",
           shape: m.kind === "buy" ? "arrowUp" : m.kind === "sell" ? "arrowDown" : "circle",
-          color: colors[m.kind],
-          text: m.kind === "buy" ? "K" : m.kind === "sell" ? "S" : m.kind === "report" ? "R" : m.kind === "dividend" ? "U" : "",
-        }) as SeriesMarker<Time>)
-        .sort((a, b) => String(a.time).localeCompare(String(b.time)));
-      createSeriesMarkers(main, ms);
+          color: m.kind === "news" && m.tone != null ? (m.tone > 0 ? up : down) : colors[m.kind],
+          text: letters[m.kind],
+          size: m.kind === "news" ? 0.6 : 1,
+        } as SeriesMarker<Time>);
+      }
+      createSeriesMarkers(main, [...byKey.values()].sort((a, b) => String(a.time).localeCompare(String(b.time))));
     }
 
     // Visa valt intervall men låt användaren scrolla bakåt.
@@ -229,7 +242,7 @@ export function PriceChart({ symbol, currency, gmtoffset, daily, fetchedAt, stal
         )}
       </div>
       <div className="flex items-center justify-between px-5 pt-2 text-[10.5px] text-muted">
-        <span>Valuta: {currency}{isIntraday ? " · Tider i börsens lokala tid" : " · MA = glidande medelvärde (dagar)"}</span>
+        <span>Valuta: {currency}{isIntraday ? " · Tider i börsens lokala tid" : " · MA = glidande medelvärde (dagar)"}{!isIntraday && markers.length > 0 && " · Markörer: N = nyhet (grön/röd ton), R = rapport, U = utdelning"}</span>
         <span>Källa: Yahoo Finance{stampAt ? ` · ${fmtDateTime(stampAt)}` : ""}{stale ? " · cachad" : ""}</span>
       </div>
     </div>

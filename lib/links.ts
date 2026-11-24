@@ -26,11 +26,16 @@ export function stockPath(ticker: string): string {
   return `/aktie/${encodeURIComponent(ticker)}`;
 }
 
+/** Söksträng för nyheter: söknamn med egna operatorer används som de är, annars exakt fras. */
+export function newsQuery(searchName: string): string {
+  return /["()]|\sOR\s/.test(searchName) ? searchName : `"${searchName}"`;
+}
+
 export function linksFor(item: Pick<WatchItem, "ticker" | "name" | "searchName">) {
   return {
     avanza: avanzaUrl(item.name),
     yahoo: yahooUrl(item.ticker),
-    news: googleNewsUrl(`"${item.searchName}"`),
+    news: googleNewsUrl(newsQuery(item.searchName)),
     chart: stockPath(item.ticker),
   };
 }
