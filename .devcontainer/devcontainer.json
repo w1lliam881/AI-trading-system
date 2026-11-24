@@ -1,13 +1,17 @@
 {
   "name": "Terminalen",
   "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-  "hostRequirements": { "cpus": 2 },
+  "hostRequirements": {
+    "cpus": 2
+  },
   "waitFor": "postCreateCommand",
   "postCreateCommand": "npm install",
   "postAttachCommand": {
-    "app": "npm run dev"
+    "app": "bash scripts/codespace-start.sh"
   },
-  "forwardPorts": [3000],
+  "forwardPorts": [
+    3000
+  ],
   "portsAttributes": {
     "3000": {
       "label": "Terminalen",
@@ -16,7 +20,9 @@
   },
   "customizations": {
     "codespaces": {
-      "openFiles": ["README.md"]
+      "openFiles": [
+        "README.md"
+      ]
     },
     "vscode": {
       "settings": {
