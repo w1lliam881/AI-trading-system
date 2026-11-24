@@ -11,3 +11,4 @@ next-env.d.ts
 # Lokal databas (cache + portföljer). Botten-data committas separat i data/bot/.
 data/*.db
 data/*.db-*
+data/mobil.html
