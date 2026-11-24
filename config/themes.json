@@ -1,0 +1,16 @@
+{
+  "_info": "Teman i världsnyheterna. 'keywords' matchas mot rubriker (från ordets början). 'sectors' = sektorer i bevakningslistan som temat bedöms påverka. Redigera fritt.",
+  "themes": [
+    { "id": "rates", "label": "Räntor & inflation", "keywords": ["ränt", "inflation", "riksbank", "styrränt", "kpi", "fed", "federal reserve", "ecb", "interest rate", "rate cut", "rate hike", "cpi", "bond yield", "treasury"], "sectors": ["Finans", "Fastigheter", "Konsument"] },
+    { "id": "trade", "label": "Handel & tullar", "keywords": ["tull", "handelskrig", "frihandel", "export", "import", "tariff", "trade war", "trade deal", "trade talks"], "sectors": ["Industri", "Konsument", "Teknik"] },
+    { "id": "ai", "label": "AI & halvledare", "keywords": ["ai", "artificiell intelligens", "artificial intelligence", "chip", "halvledar", "semiconductor", "datacenter", "data center", "openai", "nvidia"], "sectors": ["Teknik", "Kommunikation"] },
+    { "id": "energy", "label": "Olja & energi", "keywords": ["olja", "oljepris", "opec", "naturgas", "elpris", "energi", "oil", "crude", "brent", "natural gas", "energy"], "sectors": ["Energi", "Industri", "Material"] },
+    { "id": "geo", "label": "Krig & geopolitik", "keywords": ["krig", "ukraina", "ryssland", "israel", "iran", "gaza", "nato", "missil", "sanktion", "war", "ukraine", "russia", "missile", "sanction", "military"], "sectors": ["Industri", "Energi"] },
+    { "id": "china", "label": "Kina", "keywords": ["kina", "kines", "peking", "china", "chinese", "beijing"], "sectors": ["Industri", "Konsument", "Material"] },
+    { "id": "cycle", "label": "Konjunktur & jobb", "keywords": ["recession", "lågkonjunktur", "högkonjunktur", "konjunktur", "arbetslös", "varsel", "bnp", "tillväxt", "unemployment", "jobs report", "layoffs", "gdp", "economy", "economic"], "sectors": ["Industri", "Konsument", "Finans"] },
+    { "id": "banks", "label": "Banker & krediter", "keywords": ["bank", "kredit", "bolån", "credit", "lender", "lending", "mortgage"], "sectors": ["Finans"] },
+    { "id": "fx", "label": "Valuta (kronan/dollarn)", "keywords": ["kronan", "kronkurs", "dollarn", "valuta", "dollar", "currency", "euro"], "sectors": ["Industri"] },
+    { "id": "health", "label": "Läkemedel & hälsa", "keywords": ["läkemedel", "vaccin", "pharma", "drug", "fda", "biotech", "medicin"], "sectors": ["Hälsovård"] },
+    { "id": "consumer", "label": "Konsumtion & handel", "keywords": ["konsumtion", "detaljhandel", "hushåll", "julhandel", "consumer", "retail", "spending", "black friday"], "sectors": ["Konsument", "Dagligvaror"] }
+  ]
+}

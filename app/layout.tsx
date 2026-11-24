@@ -4,6 +4,7 @@ import "./globals.css";
 import { Sidebar, MobileNav } from "@/components/layout/sidebar";
 import { SymbolSearch } from "@/components/layout/search";
 import { MarketClock } from "@/components/layout/market-clock";
+import { LiveStatus } from "@/components/live/live";
 import { TickerTape, TickerTapeSkeleton } from "@/components/layout/ticker-tape";
 
 // Tickerbandet ska alltid visa färsk (eller cachad) data, aldrig byggtidsdata.
@@ -24,7 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <header className="sticky top-0 z-40 border-b border-border bg-bg/85 backdrop-blur-md">
               <div className="flex h-14 items-center gap-4 px-5">
                 <SymbolSearch />
-                <div className="ml-auto hidden sm:block"><MarketClock /></div>
+                <div className="ml-auto hidden items-center gap-5 sm:flex"><LiveStatus /><MarketClock /></div>
               </div>
               <MobileNav />
             </header>

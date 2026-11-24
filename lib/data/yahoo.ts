@@ -27,6 +27,8 @@ export interface History {
   gmtoffset: number;
   price: number;
   bars: Bar[];
+  /** Utdelningar (t = unix-sekunder för x-dag, amount = per aktie). Endast dagsdata. */
+  dividends?: { t: number; amount: number }[];
 }
 
 type RawQuote = { date: Date; open: number | null; high: number | null; low: number | null; close: number | null; volume: number | null };
@@ -48,8 +50,9 @@ function toBars(quotes: RawQuote[]): Bar[] {
 }
 
 async function fetchChart(symbol: string, period1: Date, interval: "1d" | "5m" | "30m"): Promise<History> {
-  const res = await yf.chart(symbol, { period1, interval, includePrePost: false });
+  const res = await yf.chart(symbol, { period1, interval, includePrePost: false, ...(interval === "1d" ? { events: "div" } : {}) });
   const m = res.meta;
+  const divs = (res.events?.dividends ?? []).map((d) => ({ t: Math.floor(new Date(d.date).getTime() / 1000), amount: d.amount }));
   return {
     symbol: m.symbol,
     name: m.longName ?? m.shortName ?? m.symbol,
@@ -59,12 +62,13 @@ async function fetchChart(symbol: string, period1: Date, interval: "1d" | "5m" |
     gmtoffset: m.gmtoffset ?? 0,
     price: m.regularMarketPrice,
     bars: toBars(res.quotes as RawQuote[]),
+    dividends: divs.sort((a, b) => a.t - b.t),
   };
 }
 
 /** Daglig historik ~6 år bakåt (räcker för 5Å-graf + 200-dagars medelvärde). */
 export function getDailyHistory(symbol: string): Promise<Cached<History>> {
-  return cached(`daily:${symbol}`, FIFTEEN_MIN, () => {
+  return cached(`daily2:${symbol}`, FIFTEEN_MIN, () => {
     const from = new Date();
     from.setFullYear(from.getFullYear() - 6);
     return fetchChart(symbol, from, "1d");
@@ -91,11 +95,13 @@ export interface SearchHit {
   name: string;
   exchange: string;
   type: string;
+  /** Yahoos engelska sektornamn, om det finns. */
+  sector?: string;
 }
 
 export function searchSymbols(query: string): Promise<Cached<SearchHit[]>> {
   const q = query.trim().toLowerCase();
-  return cached(`search:${q}`, 24 * 60 * 60 * 1000, async () => {
+  return cached(`search2:${q}`, 24 * 60 * 60 * 1000, async () => {
     const res = await yf.search(q, { quotesCount: 10, newsCount: 0 });
     return (res.quotes as Array<Record<string, unknown>>)
       .filter((x) => typeof x.symbol === "string" && (x.quoteType === "EQUITY" || x.quoteType === "ETF" || x.quoteType === "INDEX"))
@@ -104,6 +110,7 @@ export function searchSymbols(query: string): Promise<Cached<SearchHit[]>> {
         name: String(x.longname ?? x.shortname ?? x.symbol),
         exchange: String(x.exchDisp ?? x.exchange ?? ""),
         type: String(x.quoteType ?? ""),
+        sector: typeof x.sector === "string" ? x.sector : undefined,
       }))
       // Stockholm först, sedan amerikanska huvudlistor (ticker utan punkt), sedan resten.
       .map((h, i) => ({ h, rank: (h.symbol.endsWith(".ST") ? 0 : !h.symbol.includes(".") && !/OTC/i.test(h.exchange) ? 1 : 2) * 100 + i }))
